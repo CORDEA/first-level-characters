@@ -15,21 +15,24 @@
 # Author: Yoshihiro Tanaka <contact@cordea.jp>
 # date  : 2020-01-17
 
-binmode STDOUT, ":utf8";
-
-use lib "./lib";
+package Detector;
 
 use strict;
 use warnings;
 
-use Detector;
+use Encode;
 
-my $file_name = $ARGV[0];
+my $first_level_kanji = qr/(\x88[\x9F-\xFC]|[\x89-\x97][\x40-\xFC]|\x98[\x40-\x72])/;
 
-open(my $fh, "<:encoding(utf8)", $file_name) or die "Failed to open file.";
-
-while (<$fh>) {
-    if (Detector::detect($_)) {
-        print $_;
+sub detect {
+    my $line = shift;
+    if ($line =~ /\p{Han}/) {
+        my $sjis = encode("sjis", $line);
+        unless ($sjis =~ $first_level_kanji) {
+            return 1;
+        }
     }
+    return 0;
 }
+
+1;
