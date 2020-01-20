@@ -26,7 +26,7 @@ my $first_level_kanji = qr/(\x88[\x9F-\xFC]|[\x89-\x97][\x40-\xFC]|\x98[\x40-\x7
 
 sub detect {
     my $line = shift;
-    if ($line =~ /\p{Han}/) {
+    if ($line =~ /\p{Script=Han}/) {
         my $sjis = encode("sjis", $line);
         unless ($sjis =~ $first_level_kanji) {
             return 1;
