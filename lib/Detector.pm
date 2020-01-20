@@ -22,15 +22,17 @@ use warnings;
 
 use Encode;
 
-my $first_level_kanji = qr/(\x88[\x9F-\xFC]|[\x89-\x97][\x40-\xFC]|\x98[\x40-\x72])/;
+my $first_level_kanji = qr/^(?:\x88[\x9F-\xFC]|[\x89-\x97][\x40-\xFC]|\x98[\x40-\x72])+$/;
 
 sub detect {
     my $line = shift;
-    if ($line =~ /\p{Script=Han}/) {
-        my $sjis = encode("sjis", $line);
-        unless ($sjis =~ $first_level_kanji) {
-            return 1;
-        }
+    my $hans = join("", $line =~ /(\p{Script=Han}+)/g);
+    unless ($hans) {
+        return 0;
+    }
+    my $sjis = encode("sjis", $line);
+    unless ($sjis =~ $first_level_kanji) {
+        return 1;
     }
     return 0;
 }
