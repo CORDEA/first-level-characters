@@ -19,14 +19,14 @@ use utf8;
 use strict;
 use warnings;
 
-use Test::Simple tests => 5;
+use Test::Simple tests => 7;
 
 use Detector;
 
 ok(Detector::detect("123456789") == 0);
 ok(Detector::detect("perl") == 0);
-ok(Detector::detect("あいうえお") == 0);
-ok(Detector::detect("亜唖娃湾碗腕") == 0);
+ok(Detector::detect("あいうえお。") == 0);
+ok(Detector::detect("亜唖娃湾碗腕、") == 0);
 ok(Detector::detect("弌丐丕瑤凜熙") == 1);
 ok(Detector::detect("亜唖娃弌碗腕") == 1);
-ok(Detector::detect("弌腕") == 1);
+ok(Detector::detect("弌腕。") == 1);
