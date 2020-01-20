@@ -28,3 +28,5 @@ ok(Detector::detect("perl") == 0);
 ok(Detector::detect("あいうえお") == 0);
 ok(Detector::detect("亜唖娃湾碗腕") == 0);
 ok(Detector::detect("弌丐丕瑤凜熙") == 1);
+ok(Detector::detect("亜唖娃弌碗腕") == 1);
+ok(Detector::detect("弌腕") == 1);
